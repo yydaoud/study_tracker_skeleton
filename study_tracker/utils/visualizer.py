@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from database.db_manager import DatabaseManager
-
-
+#This code was written by Jim Harding
 def plot_avg_scores_per_subject(): # Create a bar chart showing average scores for all subjects
     db = DatabaseManager()
 
