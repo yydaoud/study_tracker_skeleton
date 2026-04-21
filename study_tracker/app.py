@@ -19,23 +19,20 @@ from models.study_session import StudySession
 db = DatabaseManager()
 db.create_table()
 
-st.set_page_config(page_title="Study Tracker", page_icon="📚", layout="centered")
-st.title("📚 Study Tracker")
+st.set_page_config(page_title="Study Tracker", page_icon=" ", layout="centered")
+st.title("Study Tracker")
 
 # --- Sidebar Navigation ---
 page = st.sidebar.radio("Navigate", [
-    "🏠 Dashboard",
-    "➕ Log Session",
-    "📋 View Sessions",
-    "📊 Statistics",
-    "🔥 Streak",
-    "💡 Tips & Resources"
+    "Dashboard",
+    "Log Session",
+    "View Sessions",
+    "Statistics",
+    "Streak",
+    "Tips & Resources"
 ])
 
-# ─────────────────────────────────────────────
-# 🏠 DASHBOARD
-# ─────────────────────────────────────────────
-if page == "🏠 Dashboard":
+if page == "Dashboard":
     st.subheader("Your Overview")
 
     df = _load_dataframe()
@@ -43,7 +40,7 @@ if page == "🏠 Dashboard":
     col1, col2, col3 = st.columns(3)
     col1.metric("Total Sessions", len(df) if not df.empty else 0)
     col2.metric("Total Study Time", f"{int(df['duration'].sum())} min" if not df.empty else "0 min")
-    col3.metric("🔥 Streak", f"{calculate_streak()} days")
+    col3.metric("Streak", f"{calculate_streak()} days")
 
     if not df.empty:
         st.divider()
@@ -51,9 +48,9 @@ if page == "🏠 Dashboard":
         worst = get_worst_subject()
         most = get_most_studied_subject()
         col4, col5, col6 = st.columns(3)
-        col4.metric("🏆 Best Subject", best or "—")
-        col5.metric("⚠️ Needs Work", worst or "—")
-        col6.metric("📖 Most Studied", most or "—")
+        col4.metric("Best Subject", best or "—")
+        col5.metric("Needs Work", worst or "—")
+        col6.metric("Most Studied", most or "—")
 
         st.divider()
         st.subheader("Sessions Over Time")
@@ -63,10 +60,7 @@ if page == "🏠 Dashboard":
     else:
         st.info("No sessions logged yet. Head to **Log Session** to get started!")
 
-# ─────────────────────────────────────────────
-# ➕ LOG SESSION
-# ─────────────────────────────────────────────
-elif page == "➕ Log Session":
+elif page == "Log Session":
     st.subheader("Log a New Study Session")
 
     with st.form("log_form"):
@@ -87,12 +81,9 @@ elif page == "➕ Log Session":
                 date=str(date)
             )
             db.insert_session(session)
-            st.success(f"✅ Logged: **{subject}** | {duration} min | Score: {score} | {date}")
+            st.success(f"Logged: **{subject}** | {duration} min | Score: {score} | {date}")
 
-# ─────────────────────────────────────────────
-# 📋 VIEW SESSIONS
-# ─────────────────────────────────────────────
-elif page == "📋 View Sessions":
+elif page == "View Sessions":
     st.subheader("All Study Sessions")
 
     df = _load_dataframe()
@@ -116,10 +107,7 @@ elif page == "📋 View Sessions":
         )
         st.caption(f"Showing {len(df)} session(s)")
 
-# ─────────────────────────────────────────────
-# 📊 STATISTICS
-# ─────────────────────────────────────────────
-elif page == "📊 Statistics":
+elif page == "Statistics":
     st.subheader("Statistics & Performance")
 
     df = _load_dataframe()
@@ -161,10 +149,7 @@ elif page == "📊 Statistics":
         if avg is not None:
             st.metric(f"Average Score — {selected}", avg)
 
-# ─────────────────────────────────────────────
-# 🔥 STREAK
-# ─────────────────────────────────────────────
-elif page == "🔥 Streak":
+elif page == "Streak":
     st.subheader("Study Streak")
 
     streak = calculate_streak()
@@ -172,9 +157,9 @@ elif page == "🔥 Streak":
     if streak == 0:
         st.warning("No active streak. Study today to start one! 💪")
     elif streak == 1:
-        st.success("🔥 Day 1 streak — you studied today! Keep going!")
+        st.success("Day 1 streak — you studied today! Keep going!")
     else:
-        st.success(f"🔥 You're on a **{streak}-day** study streak! Keep it going!")
+        st.success(f"You're on a **{streak}-day** study streak! Keep it going!")
 
     st.metric("Current Streak", f"{streak} day(s)")
 
@@ -186,17 +171,14 @@ elif page == "🔥 Streak":
         recent = df[["date"]].drop_duplicates().sort_values("date", ascending=False).head(7)
         st.dataframe(recent.rename(columns={"date": "Date"}), use_container_width=True, hide_index=True)
 
-# ─────────────────────────────────────────────
-# 💡 TIPS & RESOURCES
-# ─────────────────────────────────────────────
-elif page == "💡 Tips & Resources":
+elif page == "Tips & Resources":
     st.subheader("Tips & Resources")
 
     df = _load_dataframe()
     worst = get_worst_subject()
 
     if worst:
-        st.info(f"📉 Your lowest-scoring subject is **{worst}** — here's some help:")
+        st.info(f"Your lowest-scoring subject is **{worst}** — here's some help:")
         subject_input = worst
     else:
         st.write("No sessions yet. Pick a subject below to explore tips:")
@@ -214,11 +196,11 @@ elif page == "💡 Tips & Resources":
 
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("**💡 Study Tips**")
+        st.markdown("**Study Tips**")
         for tip in tips:
             st.markdown(f"- {tip}")
     with col2:
-        st.markdown("**🔗 Resources**")
+        st.markdown("**Resources**")
         for resource in resources:
             name, url = resource.rsplit(": ", 1)
             st.markdown(f"- [{name}]({url})")
