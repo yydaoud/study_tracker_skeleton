@@ -6,6 +6,8 @@ from features.tips import get_tips, get_resources
 from utils.helpers import clear_screen, print_separator
 from utils.visualizer import prompt_visualization_choice
 
+# This code is written by jim harding
+
 
 def view_all_sessions():
     db = DatabaseManager()
