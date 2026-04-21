@@ -115,3 +115,24 @@ class DatabaseManager:
 
         conn.commit()
         conn.close()
+
+    import pandas as pd
+    def load_sample_data(self):
+
+        #makes sure the database has not been loaded already
+        if len(self.get_all_sessions()) > 0:
+            print("Database already has data.")
+            return
+
+        df = pd.read_csv("data/sample_data.csv")
+
+        for row in df.itertuples(index=False):
+            session = StudySession(
+                subject=row.subject,
+                duration=float(row.duration),
+                score=float(row.score),
+                date=row.date
+            )
+            self.insert_session(session)
+
+        print("Sample CSV data loaded successfully.")
