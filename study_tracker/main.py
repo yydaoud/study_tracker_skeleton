@@ -86,9 +86,10 @@ def main_menu(): # Display and handle the main menu.
         print("4. Check Study Streak")
         print("5. Get Study Tips")
         print("6. Show Charts")
-        print("7. Exit")
+        print("7. Import data")
+        print("8. Exit")
 
-        choice = input("Choose an option (1-7): ").strip() # Gets the user input and puts it in "choice".
+        choice = input("Choose an option (1-8): ").strip() # Gets the user input and puts it in "choice".
         print()
         # Depending on the choice, it calls the appropriate function. If the choice is invalid,
         # it shows an error message and loops back to the menu.
